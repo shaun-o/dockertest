@@ -1,0 +1,36 @@
+version: "3"
+services:
+  web:
+    # replace username/repo:tag with your name and image details
+    image: dockertest
+    deploy:
+      replicas: 5
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    ports:
+      - "80:80"
+    networks:
+      - webnet
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - /Users/shaunoates/Dropbox/Coding/dockertest/data:/data
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    command: redis-server --appendonly yes
+    networks:
+      - webnet
+networks:
+  webnet:
